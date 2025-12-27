@@ -10,16 +10,16 @@ import java.util.List;
 @Entity
 @Table(name = "admins")
 public class Admin {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id; // ✅ wrapper
 
     @Column(nullable = false)
     private String name;
 
-    @JsonIgnore
     @Column(nullable = false)
-    private  String password;
+    private String password;
 
     @OneToMany(mappedBy = "admin")
     @JsonIgnore
@@ -28,18 +28,18 @@ public class Admin {
     public Admin() {
     }
 
-    public Admin(long id, String name, String password, List<AiTools> aitools) {
+    public Admin(Long id, String name, String password, List<AiTools> aitools) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.aitools = aitools;
     }
 
-    public long getId() {
+    public Long getId() {          // ✅ wrapper
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {   // ✅ wrapper
         this.id = id;
     }
 
