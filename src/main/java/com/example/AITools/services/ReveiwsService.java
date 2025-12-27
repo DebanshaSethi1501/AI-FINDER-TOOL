@@ -36,24 +36,29 @@ public class ReveiwsService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<Reveiws> getAllPendingReviews() {
         return reveiwsRepo.findAllPending();
     }
 
+    @Transactional(readOnly = true)
     public List<Reveiws> getAllApprovedReviews() {
         return reveiwsRepo.findAllApproved();
     }
 
+    @Transactional(readOnly = true)
     public List<Reveiws> getReviewsByAiToolId(Long aiToolId) {
         return reveiwsRepo.findByAiToolIdWithFetch(aiToolId);
     }
 
+    @Transactional(readOnly = true)
     public List<Reveiws> getApprovedReviewsByAiToolId(Long aiToolId) {
         return reveiwsRepo.findByAiToolIdAndStatusWithFetch(aiToolId, Reveiws.ReviewStatus.APPROVED);
     }
 
+    @Transactional(readOnly = true)
     public Reveiws getReviewById(Long reviewId) {
-        return reveiwsRepo.findById(reviewId)
+        return reveiwsRepo.findByIdWithAiTool(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
     }
 
@@ -78,6 +83,7 @@ public class ReveiwsService {
         reveiwsRepo.delete(review);
     }
 
+    @Transactional(readOnly = true)
     public List<Reveiws> getReviewsByStatus(Reveiws.ReviewStatus status) {
         return reveiwsRepo.findByStatusWithAiTool(status);
     }

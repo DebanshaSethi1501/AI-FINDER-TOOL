@@ -33,16 +33,16 @@ public class AiToolsController {
         return admin.getId();
     }
 
+    @GetMapping
+    public ResponseEntity<List<AiTools>> getAllAiTools() {
+        List<AiTools> tools = aiToolsService.getAllAiTools();
+        return ResponseEntity.ok(tools);
+    }
+
     @GetMapping("/my-tools")
     public ResponseEntity<List<AiTools>> getMyAiTools(Authentication authentication) {
         Long adminId = getAuthenticatedAdminId(authentication);
         List<AiTools> tools = aiToolsService.getAiToolsByAdminId(adminId);
-        return ResponseEntity.ok(tools);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<AiTools>> getAllAiTools() {
-        List<AiTools> tools = aiToolsService.getAllAiTools();
         return ResponseEntity.ok(tools);
     }
 
@@ -96,6 +96,15 @@ public class AiToolsController {
         response.put("deletedId", id.toString());
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/tools")
+    public List<AiTools> getTools(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false, name = "price") String price,
+            @RequestParam(required = false) Double rating
+    ) {
+        return aiToolsService.getFilteredTools(category, rating, price);
     }
 
 }

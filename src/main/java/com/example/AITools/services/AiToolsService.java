@@ -73,5 +73,10 @@ public class AiToolsService {
     public boolean isToolOwnedByAdmin(Long toolId, Long adminId) {
         return aiToolsRepo.findByIdAndAdminId(toolId, adminId).isPresent();
     }
+
+    public List<AiTools> getFilteredTools(String category,Double rating, String price){
+        return aiToolsRepo.filterTools(category,price,rating);
+    }
+
 }
 
