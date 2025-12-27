@@ -26,9 +26,6 @@ public class AiToolsController {
         this.adminService = adminService;
     }
 
-    /**
-     * Get the authenticated admin's ID from the JWT token
-     */
     private Long getAuthenticatedAdminId(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
@@ -36,10 +33,6 @@ public class AiToolsController {
         return admin.getId();
     }
 
-    /**
-     * Get all AI tools for the authenticated admin
-     * GET /api/aitools/my-tools
-     */
     @GetMapping("/my-tools")
     public ResponseEntity<List<AiTools>> getMyAiTools(Authentication authentication) {
         Long adminId = getAuthenticatedAdminId(authentication);
@@ -47,30 +40,18 @@ public class AiToolsController {
         return ResponseEntity.ok(tools);
     }
 
-    /**
-     * Get all AI tools (public endpoint for browsing)
-     * GET /api/aitools
-     */
     @GetMapping
     public ResponseEntity<List<AiTools>> getAllAiTools() {
         List<AiTools> tools = aiToolsService.getAllAiTools();
         return ResponseEntity.ok(tools);
     }
 
-    /**
-     * Get a specific AI tool by ID
-     * GET /api/aitools/{id}
-     */
     @GetMapping("/{id}")
     public ResponseEntity<AiTools> getAiToolById(@PathVariable Long id) {
         AiTools tool = aiToolsService.getAiToolById(id);
         return ResponseEntity.ok(tool);
     }
 
-    /**
-     * Create a new AI tool (authenticated admin only)
-     * POST /api/aitools
-     */
     @PostMapping
     public ResponseEntity<Map<String, Object>> createAiTool(
             @RequestBody AiTools aiTool,
@@ -86,10 +67,6 @@ public class AiToolsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    /**
-     * Update an AI tool (authenticated admin only - must own the tool)
-     * PUT /api/aitools/{id}
-     */
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> updateAiTool(
             @PathVariable Long id,
@@ -106,10 +83,6 @@ public class AiToolsController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Delete an AI tool (authenticated admin only - must own the tool)
-     * DELETE /api/aitools/{id}
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteAiTool(
             @PathVariable Long id,
@@ -125,22 +98,5 @@ public class AiToolsController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Check if the authenticated admin owns a specific tool
-     * GET /api/aitools/{id}/ownership
-     */
-    @GetMapping("/{id}/ownership")
-    public ResponseEntity<Map<String, Boolean>> checkOwnership(
-            @PathVariable Long id,
-            Authentication authentication) {
-
-        Long adminId = getAuthenticatedAdminId(authentication);
-        boolean isOwner = aiToolsService.isToolOwnedByAdmin(id, adminId);
-
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("isOwner", isOwner);
-
-        return ResponseEntity.ok(response);
-    }
 }
 

@@ -43,13 +43,8 @@ public class AdminController {
         this.userDetailsService = userDetailsService;
     }
 
-    /**
-     * Register a new admin
-     * POST /auth/admin/register
-     */
     @PostMapping("/admin/register")
     public ResponseEntity<Map<String, String>> registerAdmin(@RequestBody Admin admin){
-        // Check if admin already exists
         if (adminRepo.findByName(admin.getName()).isPresent()) {
             Map<String, String> response = new HashMap<>();
             response.put("error", "Username already exists");
@@ -67,10 +62,6 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Login endpoint
-     * POST /auth/admin/login
-     */
     @PostMapping("/admin/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Admin admin) {
         try {
@@ -80,11 +71,9 @@ public class AdminController {
                             admin.getPassword()
                     )
             );
-
             UserDetails userDetails = userDetailsService.loadUserByUsername(admin.getName());
             String token = jwtService.generateToken(userDetails);
 
-            // Get the admin ID
             Admin authenticatedAdmin = adminService.getAdminByName(admin.getName());
 
             Map<String, String> response = new HashMap<>();
@@ -101,21 +90,5 @@ public class AdminController {
         }
     }
 
-    /**
-     * Get current admin profile (authenticated)
-     * GET /auth/admin/profile
-     */
-    @GetMapping("/admin/profile")
-    public ResponseEntity<Map<String, Object>> getProfile(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Admin admin = adminService.getAdminByName(userDetails.getUsername());
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("id", admin.getId());
-        response.put("username", admin.getName());
-        response.put("totalTools", admin.getAitools() != null ? admin.getAitools().size() : 0);
-
-        return ResponseEntity.ok(response);
-    }
 
 }
