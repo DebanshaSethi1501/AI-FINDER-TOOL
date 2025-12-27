@@ -71,6 +71,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter{
                         .setAuthentication(authToken);
             }
         }
+        System.out.println("Request Path: " + request.getServletPath());
 
         filterChain.doFilter(request, response);
     }
