@@ -35,6 +35,8 @@ public class SecurityConfig  {
                 .formLogin((form)->form.disable())
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/aitools", "/api/aitools/**").permitAll()
+                        .requestMatchers("/api/reviews", "/api/reviews/aitool/**", "/api/reviews/approved").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session)->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

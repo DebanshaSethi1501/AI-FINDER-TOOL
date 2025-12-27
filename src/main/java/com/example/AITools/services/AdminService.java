@@ -15,32 +15,21 @@ public class AdminService {
         this.adminRepo = adminRepo;
     }
 
-    /**
-     * Get admin by ID
-     */
     public Admin getAdminById(Long adminId) {
         return adminRepo.findById(adminId)
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + adminId));
     }
 
-    /**
-     * Get admin by username
-     */
     public Admin getAdminByName(String name) {
         return adminRepo.findByName(name)
                 .orElseThrow(() -> new RuntimeException("Admin not found with name: " + name));
     }
 
-    /**
-     * Get all admins
-     */
+
     public List<Admin> getAllAdmins() {
         return adminRepo.findAll();
     }
 
-    /**
-     * Update admin profile
-     */
     public Admin updateAdmin(Long adminId, Admin updatedAdmin) {
         Admin admin = getAdminById(adminId);
         admin.setName(updatedAdmin.getName());
@@ -48,9 +37,6 @@ public class AdminService {
         return adminRepo.save(admin);
     }
 
-    /**
-     * Delete admin
-     */
     public void deleteAdmin(Long adminId) {
         Admin admin = getAdminById(adminId);
         adminRepo.delete(admin);

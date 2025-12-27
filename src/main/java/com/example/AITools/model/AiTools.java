@@ -30,6 +30,10 @@ public class AiTools {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
+    @OneToMany(mappedBy = "aiTool", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Reveiws> reviews;
+
     public AiTools() {
     }
 
@@ -106,5 +110,13 @@ public class AiTools {
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
+    }
+
+    public List<Reveiws> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Reveiws> reviews) {
+        this.reviews = reviews;
     }
 }
