@@ -11,7 +11,7 @@ import java.util.List;
 public class AiTools {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
@@ -30,10 +30,14 @@ public class AiTools {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
+    @OneToMany(mappedBy = "aiTool", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Reveiws> reviews;
+
     public AiTools() {
     }
 
-    public AiTools(long id, String name, String decription, String usecases, String category, String pricingtype, double rating, Admin admin) {
+    public AiTools(Long id, String name, String decription, String usecases, String category, String pricingtype, double rating, Admin admin) {
         this.id = id;
         this.name = name;
         this.decription = decription;
@@ -44,11 +48,11 @@ public class AiTools {
         this.admin = admin;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -106,5 +110,13 @@ public class AiTools {
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
+    }
+
+    public List<Reveiws> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Reveiws> reviews) {
+        this.reviews = reviews;
     }
 }
